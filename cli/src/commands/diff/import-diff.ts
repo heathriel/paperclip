@@ -67,7 +67,7 @@ function normalizePath(p: string): string {
 }
 
 function scanPackage(rootPath: string): Promise<PackageEntity[]> {
-  return new async function scan(dir: string): Promise<PackageEntity[]> {
+  async function scan(dir: string): Promise<PackageEntity[]> {
     const entities: PackageEntity[] = [];
     const entries = await readdir(dir, { withFileTypes: true });
     
@@ -123,7 +123,9 @@ function scanPackage(rootPath: string): Promise<PackageEntity[]> {
     }
     
     return entities;
-  }(rootPath);
+  }
+
+  return scan(rootPath);
 }
 
 function compare(left: PackageEntity[], right: PackageEntity[]): DiffResult {
